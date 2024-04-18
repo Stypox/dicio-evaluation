@@ -3,9 +3,9 @@ kotlin = "1.9.23"
 kotest = "5.8.1"
 
 [libraries]
-jetbrainsKotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotestRunner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotestAssertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 
 [plugins]
+jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

@@ -1,6 +1,6 @@
 plugins {
+    alias(libs.plugins.jetbrainsKotlinJvm)
     id("java-library")
-    id("kotlin")
 }
 
 tasks.withType<Test>().configureEach {
