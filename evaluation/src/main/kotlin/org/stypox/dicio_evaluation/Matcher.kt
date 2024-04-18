@@ -1,5 +1,7 @@
 package org.stypox.dicio_evaluation
 
+import kotlin.time.measureTimedValue
+
 class Matcher(
     private val scoringFunction: (stats: Stats) -> Double,
     private val pruningFunction: (scoringFunction: (stats: Stats) -> Double, options: MutableList<Stats>) -> Unit,
@@ -30,12 +32,15 @@ class Matcher(
     }
 
     fun match(): MatchInfo {
-        val options = match(0, 0)
+        val (options, time) = measureTimedValue {
+            match(0, 0)
+        }
         val bestStats = options.maxBy(scoringFunction)
         return MatchInfo(
             options = options.size,
             score = scoringFunction(bestStats),
             stats = bestStats,
+            time = time,
         )
     }
 }
