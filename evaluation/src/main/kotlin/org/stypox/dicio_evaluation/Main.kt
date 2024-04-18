@@ -11,9 +11,19 @@ fun scoringF(stats: Stats): Double {
     return (stats.userMatched + stats.refMatched) / denominator.toDouble().pow(SCORING_F_PARAM)
 }
 
+fun pruningNone(scoringFunction: (stats: Stats) -> Double, options: MutableList<Stats>) {
+}
+
+fun pruningBestScore(scoringFunction: (stats: Stats) -> Double, options: MutableList<Stats>) {
+    val best = options.maxBy(scoringFunction)
+    options.clear()
+    options.add(best)
+}
+
 fun main() {
     val matcher = Matcher(
         scoringFunction = ::scoringF,
+        pruningFunction = ::pruningNone,
         userWords = listOf("a", "b", "c", "e", "d", "g", "c", "d", "e"),
         refWords = listOf("a", "c", "d", "g", "e", "c", "d", "g", "e"),
     )

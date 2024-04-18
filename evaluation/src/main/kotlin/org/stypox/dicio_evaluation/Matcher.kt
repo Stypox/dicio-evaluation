@@ -2,6 +2,7 @@ package org.stypox.dicio_evaluation
 
 class Matcher(
     private val scoringFunction: (stats: Stats) -> Double,
+    private val pruningFunction: (scoringFunction: (stats: Stats) -> Double, options: MutableList<Stats>) -> Unit,
     private val userWords: List<String>,
     private val refWords: List<String>,
 ) {
@@ -24,6 +25,7 @@ class Matcher(
             it.refWeight += 1
         })
 
+        pruningFunction(scoringFunction, res)
         return res
     }
 
