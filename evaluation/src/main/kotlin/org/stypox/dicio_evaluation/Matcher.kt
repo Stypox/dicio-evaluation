@@ -16,15 +16,17 @@ class Matcher(
         }
 
         val res = mutableListOf<Stats>()
-        res.addAll(match(u + 1, r).onEach { it.userWeight += 1 })
-        res.addAll(match(u, r + 1).onEach { it.refWeight += 1 })
+        res.addAll(match(u + 1, r).map { it.copy(userWeight = it.userWeight + 1) })
+        res.addAll(match(u, r + 1).map { it.copy(refWeight = it.refWeight + 1) })
 
         val wordMatches = if (userWords[u] == refWords[r]) 1 else 0
-        res.addAll(match(u + 1, r + 1).onEach {
-            it.userMatched += wordMatches
-            it.userWeight += 1
-            it.refMatched += wordMatches
-            it.refWeight += 1
+        res.addAll(match(u + 1, r + 1).map {
+            it.copy(
+                userMatched = it.userMatched + wordMatches,
+                userWeight = it.userWeight + 1,
+                refMatched = it.refMatched + wordMatches,
+                refWeight = it.refWeight + 1,
+            )
         })
 
         pruningFunction(scoringFunction, res)

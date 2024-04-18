@@ -1,10 +1,10 @@
 package org.stypox.dicio_evaluation
 
 data class Stats(
-    var userMatched: Int,
-    var userWeight: Int,
-    var refMatched: Int,
-    var refWeight: Int,
+    val userMatched: Int,
+    val userWeight: Int,
+    val refMatched: Int,
+    val refWeight: Int,
 ) {
     fun plus(other: Stats) = Stats(
         userMatched + other.userMatched,
