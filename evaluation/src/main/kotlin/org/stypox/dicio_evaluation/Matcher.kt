@@ -8,12 +8,17 @@ class Matcher(
     private val userWords: List<String>,
     private val refWords: List<String>,
 ) {
+    private var mem: List<MutableList<List<Stats>?>> = listOf()
+
     private fun match(u: Int, r: Int): List<Stats> {
         if (u == userWords.size) {
             return listOf(Stats(0, 0, 0, refWords.size - r))
         } else if (r == refWords.size) {
             return listOf(Stats(0, userWords.size - u, 0, 0))
         }
+
+        // if we have something already in memory, return that instead
+        mem[u][r]?.let { return@match it }
 
         val res = mutableListOf<Stats>()
         res.addAll(match(u + 1, r).map { it.copy(userWeight = it.userWeight + 1) })
@@ -30,13 +35,16 @@ class Matcher(
         })
 
         pruningFunction(scoringFunction, res)
+        mem[u][r] = res
         return res
     }
 
     fun match(): MatchInfo {
+        mem = List(userWords.size) { MutableList(refWords.size) { null } }
         val (options, time) = measureTimedValue {
             match(0, 0)
         }
+        mem = listOf()
         val bestStats = options.maxBy(scoringFunction)
         return MatchInfo(
             options = options.size,
