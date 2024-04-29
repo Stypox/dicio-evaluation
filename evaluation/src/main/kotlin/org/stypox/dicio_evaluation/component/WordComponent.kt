@@ -25,13 +25,20 @@ data class WordComponent(
     private val text: String,
     private val weight: Float,
 ) : Component {
-    override fun match(start: Int, end: Int, tokenizations: Tokenizations): MatchResult {
+    override fun match(start: Int, end: Int, tokenizations: Tokenizations): List<MatchResult> {
         val token = tokenizations.getOrTokenize("word", ::splitWords)
             .findTokenStartingAt(start)
-        return if (token == null || token.end > end || token.text != text) {
-            MatchResult(0.0f, 0.0f, 0.0f, weight, start)
-        } else {
-            MatchResult(1.0f, 1.0f, weight, weight, token.end)
-        }
+        return listOf(
+            if (token == null || token.text != text) {
+                // canGrow=false since even if end was bigger we wouldn't match anything more
+                MatchResult(0.0f, 0.0f, 0.0f, weight, start, false)
+            } else if (token.end > end) {
+                // canGrow=true since if end was bigger we would be able to match the word
+                MatchResult(0.0f, 0.0f, 0.0f, weight, start, true)
+            } else {
+                // canGrow=false since WordComponent matches only one word at a time
+                MatchResult(1.0f, 1.0f, weight, weight, token.end, false)
+            }
+        )
     }
 }

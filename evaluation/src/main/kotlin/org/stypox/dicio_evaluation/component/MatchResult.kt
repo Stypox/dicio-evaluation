@@ -10,4 +10,11 @@ data class MatchResult(
      * Exclusive index
      */
     val end: Int,
-)
+    val canGrow: Boolean,
+) {
+    companion object {
+        fun empty(end: Int, canGrow: Boolean): MatchResult {
+            return MatchResult(0.0f, 0.0f, 0.0f, 0.0f, end, canGrow)
+        }
+    }
+}
