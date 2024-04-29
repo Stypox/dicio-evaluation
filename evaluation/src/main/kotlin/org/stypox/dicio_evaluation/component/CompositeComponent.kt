@@ -5,7 +5,7 @@ import java.util.ArrayList
 class CompositeComponent(
     private val components: List<Component>
 ) : Component {
-    override fun match(start: Int, end: Int, tokenizations: Tokenizations): List<MatchResult> {
+    override fun match(start: Int, end: Int, ctx: MatchContext): List<MatchResult> {
         val mem: Array<Array<List<MatchResult>?>> =
             Array(end-start+1) { Array(components.size) { null } }
 
@@ -19,7 +19,7 @@ class CompositeComponent(
             var compResults = listOf<MatchResult>()
             for (compEnd in compStart..end) {
                 if (compResults.isEmpty() || compResults.any { it.canGrow }) {
-                    compResults = components[j].match(compStart, compEnd, tokenizations)
+                    compResults = components[j].match(compStart, compEnd, ctx)
                 }
                 val dpResults = dp(compEnd, j+1)
                 for (compResult in compResults) {
@@ -40,6 +40,7 @@ class CompositeComponent(
                 }
             }
 
+            ctx.pruningFunction(results)
             mem[compStart - start][j] = results
             return results
         }

@@ -1,7 +1,9 @@
 package org.stypox.dicio_evaluation.component
 
-class Tokenizations(
-    val userInput: String
+class MatchContext(
+    val userInput: String,
+    val scoringFunction: (stats: MatchResult) -> Double,
+    val pruningFunction: (options: MutableList<MatchResult>) -> Unit,
 ) {
     private val tokenizations: MutableMap<String, Any> = HashMap()
 

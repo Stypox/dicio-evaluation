@@ -25,8 +25,8 @@ data class WordComponent(
     private val text: String,
     private val weight: Float,
 ) : Component {
-    override fun match(start: Int, end: Int, tokenizations: Tokenizations): List<MatchResult> {
-        val token = tokenizations.getOrTokenize("word", ::splitWords)
+    override fun match(start: Int, end: Int, ctx: MatchContext): List<MatchResult> {
+        val token = ctx.getOrTokenize("word", ::splitWords)
             .findTokenStartingAt(start)
         return listOf(
             if (token == null || token.text != text) {

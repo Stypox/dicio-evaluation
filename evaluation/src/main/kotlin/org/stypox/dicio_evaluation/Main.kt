@@ -4,7 +4,7 @@ import org.stypox.dicio_evaluation.component.CompositeComponent
 import kotlin.math.min
 import kotlin.math.pow
 import org.stypox.dicio_evaluation.component.MatchResult
-import org.stypox.dicio_evaluation.component.Tokenizations
+import org.stypox.dicio_evaluation.component.MatchContext
 import org.stypox.dicio_evaluation.component.WordComponent
 import kotlin.time.measureTimedValue
 
@@ -52,12 +52,12 @@ fun match(
     pruningFunction: (MutableList<MatchResult>) -> Unit,
 ): MatchInfo {
     val (options, time) = measureTimedValue {
-        val tokenizations = Tokenizations(userInput)
+        val ctx = MatchContext(userInput, scoringFunction, pruningFunction)
         val options = ArrayList<MatchResult>()
         for (start in 0..userInput.length) {
             val skippedWordsWeight = start * 0.1f
             options.addAll(
-                component.match(0, userInput.length, tokenizations)
+                component.match(0, userInput.length, ctx)
                     .map { it.copy(userWeight = it.userWeight + skippedWordsWeight) }
             )
         }

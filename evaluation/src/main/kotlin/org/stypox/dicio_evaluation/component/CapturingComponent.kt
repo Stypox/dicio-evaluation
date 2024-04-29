@@ -3,7 +3,7 @@ package org.stypox.dicio_evaluation.component
 class CapturingComponent(
     private val weight: Float
 ) : Component {
-    override fun match(start: Int, end: Int, tokenizations: Tokenizations): List<MatchResult> {
+    override fun match(start: Int, end: Int, ctx: MatchContext): List<MatchResult> {
         return listOf(MatchResult(
             userMatched = (end-start) / 10.0f,
             userWeight = (end-start) / 10.0f,
