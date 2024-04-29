@@ -5,10 +5,6 @@ import java.util.ArrayList
 class CompositeComponent(
     private val components: List<Component>
 ) : Component {
-    fun match(userInput: String): List<MatchResult> {
-        return match(0, userInput.length, Tokenizations(userInput))
-    }
-
     override fun match(start: Int, end: Int, tokenizations: Tokenizations): List<MatchResult> {
         val mem: Array<Array<List<MatchResult>?>> =
             Array(end-start+1) { Array(components.size) { null } }
