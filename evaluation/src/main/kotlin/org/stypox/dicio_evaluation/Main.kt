@@ -4,8 +4,9 @@ import org.stypox.dicio_evaluation.component.CompositeComponent
 import kotlin.math.min
 import kotlin.math.pow
 import org.stypox.dicio_evaluation.component.MatchResult
-import org.stypox.dicio_evaluation.component.MatchContext
+import org.stypox.dicio_evaluation.context.MatchContext
 import org.stypox.dicio_evaluation.component.WordComponent
+import org.stypox.dicio_evaluation.context.cumulativeWeight
 import kotlin.time.measureTimedValue
 
 const val SCORING_F_PARAM = 0.9
@@ -53,9 +54,11 @@ fun match(
 ): MatchInfo {
     val (options, time) = measureTimedValue {
         val ctx = MatchContext(userInput, scoringFunction, pruningFunction)
+        val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
+
         val options = ArrayList<MatchResult>()
         for (start in 0..userInput.length) {
-            val skippedWordsWeight = start * 0.1f
+            val skippedWordsWeight = cumulativeWeight[start] - cumulativeWeight[0]
             options.addAll(
                 component.match(0, userInput.length, ctx)
                     .map { it.copy(userWeight = it.userWeight + skippedWordsWeight) }

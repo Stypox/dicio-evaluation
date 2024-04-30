@@ -1,11 +1,14 @@
 package org.stypox.dicio_evaluation.component
 
+import org.stypox.dicio_evaluation.context.MatchContext
+import org.stypox.dicio_evaluation.context.cumulativeWeight
 import java.util.ArrayList
 
 class CompositeComponent(
     private val components: List<Component>
 ) : Component {
     override fun match(start: Int, end: Int, ctx: MatchContext): List<MatchResult> {
+        val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
         val mem: Array<Array<List<MatchResult>?>> =
             Array(end-start+1) { Array(components.size) { null } }
 
@@ -23,7 +26,8 @@ class CompositeComponent(
                 }
                 val dpResults = dp(compEnd, j+1)
                 for (compResult in compResults) {
-                    val skippedWordsWeight = (compEnd - compResult.end) * 0.1f
+                    val skippedWordsWeight =
+                        cumulativeWeight[compEnd] - cumulativeWeight[compResult.end]
                     results.addAll(
                         dpResults.map {
                             MatchResult(

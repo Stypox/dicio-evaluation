@@ -1,4 +1,4 @@
-package org.stypox.dicio_evaluation.component
+package org.stypox.dicio_evaluation.context
 
 interface Token {
     /**

@@ -1,5 +1,7 @@
 package org.stypox.dicio_evaluation.component
 
+import org.stypox.dicio_evaluation.context.MatchContext
+
 class CapturingComponent(
     private val weight: Float
 ) : Component {
