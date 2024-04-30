@@ -56,7 +56,7 @@ fun match(
     scoringFunction: (MatchResult) -> Double,
     pruningFunction: (MutableList<MatchResult>) -> Unit,
 ): MatchInfo {
-    val (options, time) = measureTimedValue {
+    val (res, time) = measureTimedValue {
         component.setupCache(userInput.length)
         val ctx = MatchContext(userInput, scoringFunction, pruningFunction)
         val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
@@ -69,14 +69,15 @@ fun match(
                     .map { it.copy(userWeight = it.userWeight + skippedWordsWeight) }
             )
         }
-        return@measureTimedValue options
+
+        val bestResult = options.maxBy(scoringFunction)
+        return@measureTimedValue Pair(options.size, bestResult)
     }
 
-    val bestResult = options.maxBy(scoringFunction)
     return MatchInfo(
-        options = options.size,
-        score = scoringFunction(bestResult),
-        result = bestResult,
+        options = res.first,
+        score = scoringFunction(res.second),
+        result = res.second,
         time = time,
     )
 }
@@ -112,7 +113,6 @@ fun main() {
             WordComponent("e", 1.0f),
             WordComponent("c", 1.0f),
             WordComponent("g", 1.0f),
-            CapturingComponent(1.0f),
         ))
 
         val info = match(
@@ -128,8 +128,8 @@ fun main() {
                 "e",
             ).joinToString(separator = " "),
             component,
-            scoringFunction = ::scoringF,
-            pruningFunction = pruningBestHalfScore(::scoringF),
+            scoringFunction = ::scoringG,
+            pruningFunction = pruningBestScore(::scoringG),
         )
 
         println(info)
