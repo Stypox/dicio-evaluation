@@ -19,11 +19,8 @@ class CompositeComponent(
             mem[compStart - start][j]?.let { return it }
 
             val results = ArrayList<MatchResult>()
-            var compResults = listOf<MatchResult>()
             for (compEnd in compStart..end) {
-                if (compResults.isEmpty() || compResults.any { it.canGrow }) {
-                    compResults = components[j].matchCached(compStart, compEnd, ctx)
-                }
+                val compResults = components[j].matchCached(compStart, compEnd, ctx)
                 val dpResults = dp(compEnd, j+1)
                 for (compResult in compResults) {
                     val skippedWordsWeight =
