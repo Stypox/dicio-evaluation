@@ -7,6 +7,9 @@ import org.stypox.dicio_evaluation.component.MatchResult
 import org.stypox.dicio_evaluation.context.MatchContext
 import org.stypox.dicio_evaluation.component.WordComponent
 import org.stypox.dicio_evaluation.context.cumulativeWeight
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.TimeSource
 import kotlin.time.measureTimedValue
 
 const val SCORING_F_PARAM = 0.9
@@ -77,25 +80,60 @@ fun match(
     )
 }
 
+fun benchmark(f: () -> Unit): Duration {
+    val timeSource = TimeSource.Monotonic
+
+    // warmup phase
+    val warmupMark = timeSource.markNow().plus(1.seconds)
+    while (warmupMark.hasNotPassedNow()) {
+        f()
+    }
+
+    // benchmark phase
+    val startMark = timeSource.markNow()
+    val endMark = startMark.plus(2.seconds)
+    var times = 0
+    while (endMark.hasNotPassedNow()) {
+        f()
+        times += 1
+    }
+
+    return startMark.elapsedNow() / times
+}
+
 fun main() {
-    val component = CompositeComponent(listOf(
-        WordComponent("a", 1.0f),
-        WordComponent("c", 1.0f),
-        WordComponent("d", 1.0f),
-        WordComponent("g", 1.0f),
-        WordComponent("e", 1.0f),
-        WordComponent("c", 1.0f),
-        WordComponent("d", 1.0f),
-        WordComponent("g", 1.0f),
-        WordComponent("e", 1.0f)
-    ))
+    val time = benchmark {
+        val component = CompositeComponent(listOf(
+            WordComponent("aaaaaaaa", 1.0f),
+            WordComponent("cccccccc", 1.0f),
+            WordComponent("dddddddd", 1.0f),
+            WordComponent("gggggggg", 1.0f),
+            WordComponent("eeeeeeee", 1.0f),
+            WordComponent("cccccccc", 1.0f),
+            WordComponent("dddddddd", 1.0f),
+            WordComponent("gggggggg", 1.0f),
+            WordComponent("eeeeeeee", 1.0f)
+        ))
 
-    val info = match(
-        "a b c e d g c d e",
-        component,
-        scoringFunction = ::scoringG,
-        pruningFunction = pruningBestScore(::scoringG),
-    )
+        val info = match(
+            arrayOf(
+                "aaaaaaaa",
+                "bbbbbbbb",
+                "cccccccc",
+                "eeeeeeee",
+                "dddddddd",
+                "gggggggg",
+                "cccccccc",
+                "dddddddd",
+                "eeeeeeee",
+            ).joinToString(separator = " "),
+            component,
+            scoringFunction = ::scoringG,
+            pruningFunction = pruningBestScore(::scoringG),
+        )
 
-    println(info)
+        println(info)
+    }
+
+    println("Time: $time")
 }
