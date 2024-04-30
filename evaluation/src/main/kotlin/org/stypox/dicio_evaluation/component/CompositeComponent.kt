@@ -6,7 +6,7 @@ import java.util.ArrayList
 
 class CompositeComponent(
     private val components: List<Component>
-) : Component {
+) : Component() {
     override fun match(start: Int, end: Int, ctx: MatchContext): List<MatchResult> {
         val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
         val mem: Array<Array<List<MatchResult>?>> =
@@ -22,7 +22,7 @@ class CompositeComponent(
             var compResults = listOf<MatchResult>()
             for (compEnd in compStart..end) {
                 if (compResults.isEmpty() || compResults.any { it.canGrow }) {
-                    compResults = components[j].match(compStart, compEnd, ctx)
+                    compResults = components[j].matchCached(compStart, compEnd, ctx)
                 }
                 val dpResults = dp(compEnd, j+1)
                 for (compResult in compResults) {
@@ -50,5 +50,12 @@ class CompositeComponent(
         }
 
         return dp(start, 0)
+    }
+
+    override fun setupCache(userInputLength: Int) {
+        super.setupCache(userInputLength)
+        for (component in components) {
+            component.setupCache(userInputLength)
+        }
     }
 }

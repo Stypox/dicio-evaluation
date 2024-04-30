@@ -30,7 +30,7 @@ fun scoringG(stats: MatchResult): Double {
             SCORING_G_RW * stats.refWeight
 }
 
-fun pruningNone(scoringFunction: (stats: MatchResult) -> Double, options: MutableList<MatchResult>) {
+fun pruningNone(options: MutableList<MatchResult>) {
 }
 
 fun pruningBestScore(scoringFunction: (stats: MatchResult) -> Double): (MutableList<MatchResult>) -> Unit = { options: MutableList<MatchResult> ->
@@ -53,6 +53,7 @@ fun match(
     pruningFunction: (MutableList<MatchResult>) -> Unit,
 ): MatchInfo {
     val (options, time) = measureTimedValue {
+        component.setupCache(userInput.length)
         val ctx = MatchContext(userInput, scoringFunction, pruningFunction)
         val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
 
@@ -60,7 +61,7 @@ fun match(
         for (start in 0..userInput.length) {
             val skippedWordsWeight = cumulativeWeight[start] - cumulativeWeight[0]
             options.addAll(
-                component.match(0, userInput.length, ctx)
+                component.matchCached(0, userInput.length, ctx)
                     .map { it.copy(userWeight = it.userWeight + skippedWordsWeight) }
             )
         }

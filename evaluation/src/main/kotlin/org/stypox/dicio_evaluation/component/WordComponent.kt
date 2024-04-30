@@ -10,7 +10,7 @@ import java.util.regex.Pattern
 data class WordComponent(
     private val text: String,
     private val weight: Float,
-) : Component {
+) : Component() {
     override fun match(start: Int, end: Int, ctx: MatchContext): List<MatchResult> {
         val token = ctx.getOrTokenize("splitWords", ::splitWords)
             .findTokenStartingAt(start)

@@ -4,7 +4,7 @@ import org.stypox.dicio_evaluation.context.MatchContext
 
 class CapturingComponent(
     private val weight: Float
-) : Component {
+) : Component() {
     override fun match(start: Int, end: Int, ctx: MatchContext): List<MatchResult> {
         return listOf(MatchResult(
             userMatched = (end-start) / 10.0f,
