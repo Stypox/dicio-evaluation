@@ -1,4 +1,5 @@
 package org.stypox.dicio_evaluation
+import org.stypox.dicio_evaluation.component.CapturingComponent
 import org.stypox.dicio_evaluation.component.Component
 import org.stypox.dicio_evaluation.component.CompositeComponent
 import kotlin.math.min
@@ -104,32 +105,31 @@ fun benchmark(f: () -> Unit): Duration {
 fun main() {
     val time = benchmark {
         val component = CompositeComponent(listOf(
-            WordComponent("aaaaaaaa", 1.0f),
-            WordComponent("cccccccc", 1.0f),
-            WordComponent("dddddddd", 1.0f),
-            WordComponent("gggggggg", 1.0f),
-            WordComponent("eeeeeeee", 1.0f),
-            WordComponent("cccccccc", 1.0f),
-            WordComponent("dddddddd", 1.0f),
-            WordComponent("gggggggg", 1.0f),
-            WordComponent("eeeeeeee", 1.0f)
+            WordComponent("a", 1.0f),
+            WordComponent("c", 1.0f),
+            WordComponent("d", 1.0f),
+            WordComponent("g", 1.0f),
+            WordComponent("e", 1.0f),
+            WordComponent("c", 1.0f),
+            WordComponent("g", 1.0f),
+            CapturingComponent(1.0f),
         ))
 
         val info = match(
             arrayOf(
-                "aaaaaaaa",
-                "bbbbbbbb",
-                "cccccccc",
-                "eeeeeeee",
-                "dddddddd",
-                "gggggggg",
-                "cccccccc",
-                "dddddddd",
-                "eeeeeeee",
+                "a",
+                "b",
+                "c",
+                "e",
+                "d",
+                "g",
+                "c",
+                "d",
+                "e",
             ).joinToString(separator = " "),
             component,
-            scoringFunction = ::scoringG,
-            pruningFunction = pruningBestScore(::scoringG),
+            scoringFunction = ::scoringF,
+            pruningFunction = pruningBestHalfScore(::scoringF),
         )
 
         println(info)
