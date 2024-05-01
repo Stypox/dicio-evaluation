@@ -8,6 +8,23 @@ import org.stypox.dicio_evaluation.benchmark.benchmark
 import org.stypox.dicio_evaluation.benchmark.match
 import java.io.FileInputStream
 
+/**
+ * The bruteforce algorithm produces O((u+1)² * binom(u+r, u+1)) options
+ * TODO does not work in some cases
+ */
+fun optionCountBruteforce(userInputLength: Int, refLength: Int): Int {
+    var result = (userInputLength + 1) * (userInputLength + 1)
+
+    for (i in 2..refLength) {
+        result *= userInputLength + i
+    }
+    for (i in 2..refLength) {
+        result /= i
+    }
+
+    return result
+}
+
 fun main() {
     val dataPoints = FileInputStream("data/data.json").use {
         @OptIn(ExperimentalSerializationApi::class)
@@ -21,6 +38,8 @@ fun main() {
             for ((component, ref) in data.ref) {
                 println("User input: $userInput")
                 println("Reference: $ref")
+                println("Option count when bruteforcing: ${
+                    optionCountBruteforce(userInput.length, ref.count { it == ' ' } + 1)}")
                 for (strategy in Strategies.entries) {
                     val (result, time) = benchmark {
                         match(
