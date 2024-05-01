@@ -1,0 +1,14 @@
+{
+  "1": {
+    "user": "a b c",
+    "ref": "a b c",
+    "betterThan": [
+      "2"
+    ]
+  },
+  "2": {
+    "user": "a b c",
+    "ref": ".. c",
+    "betterThan": []
+  }
+}

@@ -4,7 +4,7 @@ import org.stypox.dicio_evaluation.component.MatchResult
 import kotlin.math.min
 import kotlin.math.pow
 
-enum class Strategies(
+enum class Strategy(
     val scoringFunction: (stats: MatchResult) -> Double,
     val pruningFunction: (MutableList<MatchResult>) -> Unit,
     val isBruteforce: Boolean,

@@ -1,19 +1,13 @@
 package org.stypox.dicio_evaluation.example
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.data.forAll
-import io.kotest.data.row
-import io.kotest.matchers.shouldBe
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
-import org.stypox.dicio_evaluation.benchmark.Strategies
+import org.stypox.dicio_evaluation.benchmark.Strategy
 import org.stypox.dicio_evaluation.benchmark.benchmark
 import org.stypox.dicio_evaluation.benchmark.match
 import org.stypox.dicio_evaluation.benchmark.optionCountBruteforce
-import java.io.FileInputStream
-import java.nio.file.Paths
-import kotlin.math.max
 import kotlin.time.measureTimedValue
 
 fun test(examples: List<Example>, doBenchmark: Boolean, limitOptionCountBruteforce: Long) {
@@ -26,7 +20,7 @@ fun test(examples: List<Example>, doBenchmark: Boolean, limitOptionCountBrutefor
                     userInput.length, ref.count { it == ' ' } + 1)
                 println("Option count when bruteforcing: $optionCountBruteforce")
 
-                for (strategy in Strategies.entries) {
+                for (strategy in Strategy.entries) {
                     if (
                         strategy.isBruteforce &&
                         optionCountBruteforce > limitOptionCountBruteforce
