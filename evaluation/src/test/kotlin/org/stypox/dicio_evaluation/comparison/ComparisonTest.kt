@@ -47,7 +47,9 @@ class ComparisonTest : DescribeSpec({
         Strategy.entries.forEach { strategy ->
             describe(strategy.toString()) {
                 comparisons.forEach { comparison ->
-                    it("${comparison.betterKey} vs ${comparison.worseKey}") {
+                    it("${comparison.betterKey} vs ${comparison.worseKey}")
+                        .config(enabled = !strategy.isBruteforce ||
+                                comparison.isBruteforceFriendly(1000000)) {
                         test(comparison, strategy)
                     }
                 }

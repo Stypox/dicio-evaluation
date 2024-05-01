@@ -1,6 +1,7 @@
 package org.stypox.dicio_evaluation.comparison
 
 import kotlinx.serialization.Serializable
+import org.stypox.dicio_evaluation.benchmark.optionCountBruteforce
 import org.stypox.dicio_evaluation.benchmark.stringToComponent
 import org.stypox.dicio_evaluation.component.Component
 
@@ -46,4 +47,13 @@ data class Comparison(
     val worseUser: String,
     val worseRawRef: String,
     val worseRef: Component,
-)
+) {
+    fun isBruteforceFriendly(limitOptionCountBruteforce: Long): Boolean {
+        val betterOptionCountBruteforce = optionCountBruteforce(
+            betterUser.length, betterRawRef.count { it == ' ' } + 1)
+        val worseOptionCountBruteforce = optionCountBruteforce(
+            worseUser.length, worseRawRef.count { it == ' ' } + 1)
+        return betterOptionCountBruteforce < limitOptionCountBruteforce &&
+                worseOptionCountBruteforce < limitOptionCountBruteforce
+    }
+}
