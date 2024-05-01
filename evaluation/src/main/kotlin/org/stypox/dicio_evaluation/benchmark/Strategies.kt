@@ -7,11 +7,12 @@ import kotlin.math.pow
 enum class Strategies(
     val scoringFunction: (stats: MatchResult) -> Double,
     val pruningFunction: (MutableList<MatchResult>) -> Unit,
+    val isBruteforce: Boolean,
 ) {
-    LINEAR(::scoringLinear, pruningBestScore(::scoringLinear)),
-    RATIO_PRUNING_NONE(::scoringWeightedRatio, ::pruningNone),
-    RATIO_PRUNING_BEST_HALF(::scoringWeightedRatio, pruningBestHalfScore(::scoringWeightedRatio)),
-    RATIO_PRUNING_BEST(::scoringWeightedRatio, pruningBestScore(::scoringWeightedRatio)),
+    LINEAR(::scoringLinear, pruningBestScore(::scoringLinear), false),
+    RATIO_PRUNING_NONE(::scoringWeightedRatio, ::pruningNone, true),
+    RATIO_PRUNING_BEST_HALF(::scoringWeightedRatio, pruningBestHalfScore(::scoringWeightedRatio), true),
+    RATIO_PRUNING_BEST(::scoringWeightedRatio, pruningBestScore(::scoringWeightedRatio), false),
 }
 
 const val SCORING_WEIGHTED_RATIO_WEIGHT = 0.9

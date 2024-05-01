@@ -38,9 +38,15 @@ fun main() {
             for ((component, ref) in data.ref) {
                 println("User input: $userInput")
                 println("Reference: $ref")
-                println("Option count when bruteforcing: ${
-                    optionCountBruteforce(userInput.length, ref.count { it == ' ' } + 1)}")
+                val optionCountBruteforce = optionCountBruteforce(
+                    userInput.length, ref.count { it == ' ' } + 1)
+                println("Option count when bruteforcing: $optionCountBruteforce")
                 for (strategy in Strategies.entries) {
+                    if (strategy.isBruteforce && optionCountBruteforce > 500000) {
+                        println("$strategy: skipped")
+                        continue
+                    }
+
                     val (result, time) = benchmark {
                         match(
                             userInput = userInput,
