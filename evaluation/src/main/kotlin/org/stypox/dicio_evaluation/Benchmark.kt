@@ -7,7 +7,6 @@ import org.stypox.dicio_evaluation.context.cumulativeWeight
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TimeSource
-import kotlin.time.measureTimedValue
 
 fun match(
     userInput: String,
@@ -15,33 +14,28 @@ fun match(
     scoringFunction: (MatchResult) -> Double,
     pruningFunction: (MutableList<MatchResult>) -> Unit,
 ): MatchInfo {
-    val (res, time) = measureTimedValue {
-        component.setupCache(userInput.length)
-        val ctx = MatchContext(userInput, scoringFunction, pruningFunction)
-        val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
+    component.setupCache(userInput.length)
+    val ctx = MatchContext(userInput, scoringFunction, pruningFunction)
+    val cumulativeWeight = ctx.getOrTokenize("cumulativeWeight", ::cumulativeWeight)
 
-        val options = ArrayList<MatchResult>()
-        for (start in 0..userInput.length) {
-            val skippedWordsWeight = cumulativeWeight[start] - cumulativeWeight[0]
-            options.addAll(
-                component.matchCached(0, userInput.length, ctx)
-                    .map { it.copy(userWeight = it.userWeight + skippedWordsWeight) }
-            )
-        }
-
-        val bestResult = options.maxBy(scoringFunction)
-        return@measureTimedValue Pair(options.size, bestResult)
+    val options = ArrayList<MatchResult>()
+    for (start in 0..userInput.length) {
+        val skippedWordsWeight = cumulativeWeight[start] - cumulativeWeight[0]
+        options.addAll(
+            component.matchCached(0, userInput.length, ctx)
+                .map { it.copy(userWeight = it.userWeight + skippedWordsWeight) }
+        )
     }
 
+    val bestResult = options.maxBy(scoringFunction)
     return MatchInfo(
-        options = res.first,
-        score = scoringFunction(res.second),
-        result = res.second,
-        time = time,
+        options = options.size,
+        score = scoringFunction(bestResult),
+        result = bestResult,
     )
 }
 
-fun benchmark(f: () -> Unit): Duration {
+fun <T> benchmark(f: () -> T): Pair<T, Duration> {
     val timeSource = TimeSource.Monotonic
 
     // warmup phase
@@ -53,11 +47,12 @@ fun benchmark(f: () -> Unit): Duration {
     // benchmark phase
     val startMark = timeSource.markNow()
     val endMark = startMark.plus(2.seconds)
-    var times = 0
+    val result = f()
+    var times = 1
     while (endMark.hasNotPassedNow()) {
         f()
         times += 1
     }
 
-    return startMark.elapsedNow() / times
+    return Pair(result, startMark.elapsedNow() / times)
 }

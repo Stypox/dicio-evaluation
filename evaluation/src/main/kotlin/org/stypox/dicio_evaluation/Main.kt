@@ -15,7 +15,7 @@ fun main() {
     for (data in dataPoints) {
         for (userInput in data.user) {
             for ((component, ref) in data.ref) {
-                val time = benchmark {
+                val (result, time) = benchmark {
                     match(
                         userInput = userInput,
                         component = component,
@@ -24,8 +24,9 @@ fun main() {
                     )
                 }
                 println("User input: $userInput")
-                println("Ref: $ref")
+                println("Reference: $ref")
                 println("Time: $time")
+                println("Result: $result")
                 println()
             }
         }

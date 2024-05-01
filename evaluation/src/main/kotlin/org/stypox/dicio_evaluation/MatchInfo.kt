@@ -7,5 +7,4 @@ data class MatchInfo(
     val options: Int,
     val score: Double,
     val result: MatchResult,
-    val time: Duration,
 )
