@@ -1,21 +1,9 @@
 package org.stypox.dicio_evaluation.benchmark
 
-import kotlinx.serialization.Serializable
 import org.stypox.dicio_evaluation.component.CapturingComponent
 import org.stypox.dicio_evaluation.component.Component
 import org.stypox.dicio_evaluation.component.CompositeComponent
 import org.stypox.dicio_evaluation.component.WordComponent
-
-@Serializable
-data class RawData(
-    val user: List<String>,
-    val ref: List<String>,
-) {
-    fun toData() = Data(
-        user = user,
-        ref = ref.map { Pair(stringToComponent(it), it) },
-    )
-}
 
 fun stringToComponent(s: String): Component {
     val components = s
@@ -38,7 +26,16 @@ fun stringToComponent(s: String): Component {
     return CompositeComponent(components)
 }
 
-data class Data(
-    val user: List<String>,
-    val ref: List<Pair<Component, String>>,
-)
+/**
+ * The bruteforce algorithm produces O((u+1) * binom(u+r, u)) options
+ */
+fun optionCountBruteforce(userInputLength: Int, refLength: Int): Long {
+    var result = (userInputLength + 1).toLong()
+
+    for (i in 1..refLength) {
+        result *= userInputLength + i
+        result /= i
+    }
+
+    return result
+}
