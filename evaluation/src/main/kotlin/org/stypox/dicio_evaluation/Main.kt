@@ -1,38 +1,33 @@
 package org.stypox.dicio_evaluation
-import org.stypox.dicio_evaluation.component.CompositeComponent
-import org.stypox.dicio_evaluation.component.WordComponent
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import java.io.FileInputStream
 
 fun main() {
-    val time = benchmark {
-        val component = CompositeComponent(listOf(
-            WordComponent("a", 1.0f),
-            WordComponent("c", 1.0f),
-            WordComponent("d", 1.0f),
-            WordComponent("g", 1.0f),
-            WordComponent("e", 1.0f),
-            WordComponent("c", 1.0f),
-            WordComponent("g", 1.0f),
-        ))
-
-        val info = match(
-            arrayOf(
-                "a",
-                "b",
-                "c",
-                "e",
-                "d",
-                "g",
-                "c",
-                "d",
-                "e",
-            ).joinToString(separator = " "),
-            component,
-            scoringFunction = ::scoringG,
-            pruningFunction = pruningBestScore(::scoringG),
-        )
-
-        println(info)
+    val dataPoints = FileInputStream("data/data.json").use {
+        @OptIn(ExperimentalSerializationApi::class)
+        Json.decodeFromStream<List<RawData>>(it)
+    }.map {
+        it.toData()
     }
 
-    println("Time: $time")
+    for (data in dataPoints) {
+        for (userInput in data.user) {
+            for ((component, ref) in data.ref) {
+                val time = benchmark {
+                    match(
+                        userInput = userInput,
+                        component = component,
+                        scoringFunction = ::scoringG,
+                        pruningFunction = pruningBestScore(::scoringG),
+                    )
+                }
+                println("User input: $userInput")
+                println("Ref: $ref")
+                println("Time: $time")
+                println()
+            }
+        }
+    }
 }

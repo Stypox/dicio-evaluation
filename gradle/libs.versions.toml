@@ -1,11 +1,14 @@
 [versions]
 kotlin = "1.9.23"
+kotlin-serialization = "1.6.3"
 kotest = "5.8.1"
 
 [libraries]
+kotlinSerialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
 kotestRunner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
 kotestAssertions = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
 kotestProperty = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 
 [plugins]
 jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
