@@ -9,5 +9,25 @@
       "what s the weather at ..",
       "what s the weather"
     ]
+  },
+  {
+    "user": [
+      "search for this online"
+    ],
+    "ref": [
+      "search for .. online",
+      "search .. online",
+      "search online"
+    ]
+  },
+  {
+    "user": [
+      "search online"
+    ],
+    "ref": [
+      "search online",
+      "search .. online",
+      "search for .. online"
+    ]
   }
 ]

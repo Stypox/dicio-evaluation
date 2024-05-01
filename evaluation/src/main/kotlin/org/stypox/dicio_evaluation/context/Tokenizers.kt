@@ -23,25 +23,31 @@ fun splitWords(ctx: MatchContext): List<WordToken> {
     return result
 }
 
-fun cumulativeWeight(ctx: MatchContext): List<Float> {
+fun cumulativeWeight(ctx: MatchContext): FloatArray {
     val words = ctx.getOrTokenize("splitWords", ::splitWords)
-
-    val result: MutableList<Float> = ArrayList()
-    result.add(0.0f)
+    val result = FloatArray(ctx.userInput.length + 1)
     var lastEnd = 0
 
     for (word in words) {
         for (i in lastEnd..<word.start) {
-            result.add(result.last() + CHAR_WEIGHT)
+            result[i+1] = result[i] + CHAR_WEIGHT
         }
         for (i in word.start..<word.end) {
-            result.add(result.last() + WORD_WEIGHT / (word.end - word.start))
+            result[i+1] = result[i] + WORD_WEIGHT / (word.end - word.start)
         }
         lastEnd = word.end
     }
 
     for (i in lastEnd..<ctx.userInput.length) {
-        result.add(result.last() + CHAR_WEIGHT)
+        result[i+1] = result[i] + CHAR_WEIGHT
+    }
+    return result
+}
+
+fun cumulativeWhitespace(ctx: MatchContext): IntArray {
+    val result = IntArray(ctx.userInput.length + 1)
+    for (i in 0..<ctx.userInput.length) {
+        result[i+1] = result[i] + if (ctx.userInput[i].isWhitespace()) 1 else 0
     }
     return result
 }
