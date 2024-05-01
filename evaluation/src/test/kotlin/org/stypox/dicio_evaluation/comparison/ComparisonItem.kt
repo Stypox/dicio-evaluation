@@ -1,7 +1,7 @@
 package org.stypox.dicio_evaluation.comparison
 
 import kotlinx.serialization.Serializable
-import org.stypox.dicio_evaluation.benchmark.optionCountBruteforce
+import org.stypox.dicio_evaluation.benchmark.Strategy
 import org.stypox.dicio_evaluation.benchmark.stringToComponent
 import org.stypox.dicio_evaluation.component.Component
 
@@ -48,12 +48,11 @@ data class Comparison(
     val worseRawRef: String,
     val worseRef: Component,
 ) {
-    fun isBruteforceFriendly(limitOptionCountBruteforce: Long): Boolean {
-        val betterOptionCountBruteforce = optionCountBruteforce(
+    fun estimateOptionCount(strategy: Strategy): Long {
+        val betterOptionCount = strategy.estimateOptionCount(
             betterUser.length, betterRawRef.count { it == ' ' } + 1)
-        val worseOptionCountBruteforce = optionCountBruteforce(
+        val worseOptionCount = strategy.estimateOptionCount(
             worseUser.length, worseRawRef.count { it == ' ' } + 1)
-        return betterOptionCountBruteforce < limitOptionCountBruteforce &&
-                worseOptionCountBruteforce < limitOptionCountBruteforce
+        return betterOptionCount + worseOptionCount
     }
 }

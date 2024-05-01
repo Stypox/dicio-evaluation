@@ -25,17 +25,3 @@ fun stringToComponent(s: String): Component {
         .toList()
     return CompositeComponent(components)
 }
-
-/**
- * The bruteforce algorithm produces O((u+1) * binom(u+r, u)) options
- */
-fun optionCountBruteforce(userInputLength: Int, refLength: Int): Long {
-    var result = (userInputLength + 1).toLong()
-
-    for (i in 1..refLength) {
-        result *= userInputLength + i
-        result /= i
-    }
-
-    return result
-}

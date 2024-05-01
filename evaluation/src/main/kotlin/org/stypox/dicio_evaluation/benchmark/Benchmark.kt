@@ -4,7 +4,6 @@ import org.stypox.dicio_evaluation.component.Component
 import org.stypox.dicio_evaluation.component.MatchResult
 import org.stypox.dicio_evaluation.context.MatchContext
 import org.stypox.dicio_evaluation.context.cumulativeWeight
-import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TimeSource
 import kotlin.time.TimedValue
