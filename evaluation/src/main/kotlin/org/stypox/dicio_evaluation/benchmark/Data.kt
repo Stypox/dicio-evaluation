@@ -1,4 +1,4 @@
-package org.stypox.dicio_evaluation
+package org.stypox.dicio_evaluation.benchmark
 
 import kotlinx.serialization.Serializable
 import org.stypox.dicio_evaluation.component.CapturingComponent

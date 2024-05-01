@@ -2,6 +2,11 @@ package org.stypox.dicio_evaluation
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
+import org.stypox.dicio_evaluation.benchmark.RawData
+import org.stypox.dicio_evaluation.benchmark.benchmark
+import org.stypox.dicio_evaluation.benchmark.match
+import org.stypox.dicio_evaluation.benchmark.pruningBestScore
+import org.stypox.dicio_evaluation.benchmark.scoringG
 import java.io.FileInputStream
 
 fun main() {
