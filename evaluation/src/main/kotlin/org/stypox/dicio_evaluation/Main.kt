@@ -10,16 +10,13 @@ import java.io.FileInputStream
 import kotlin.time.measureTimedValue
 
 /**
- * The bruteforce algorithm produces O((u+1)² * binom(u+r, u+1)) options
- * TODO does not work in some cases
+ * The bruteforce algorithm produces O((u+1) * binom(u+r, u)) options
  */
-fun optionCountBruteforce(userInputLength: Int, refLength: Int): Int {
-    var result = (userInputLength + 1) * (userInputLength + 1)
+fun optionCountBruteforce(userInputLength: Int, refLength: Int): Long {
+    var result = (userInputLength + 1).toLong()
 
-    for (i in 2..refLength) {
+    for (i in 1..refLength) {
         result *= userInputLength + i
-    }
-    for (i in 2..refLength) {
         result /= i
     }
 
@@ -45,7 +42,7 @@ fun main() {
                     userInput.length, ref.count { it == ' ' } + 1)
                 println("Option count when bruteforcing: $optionCountBruteforce")
                 for (strategy in Strategies.entries) {
-                    if (strategy.isBruteforce && optionCountBruteforce > 500000) {
+                    if (strategy.isBruteforce && optionCountBruteforce > 1000000) {
                         println("$strategy: skipped")
                         continue
                     }
