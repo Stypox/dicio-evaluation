@@ -1,14 +1,71 @@
 {
-  "1": {
-    "user": "a b c",
-    "ref": "a b c",
+  "weather1": {
+    "user": "what s the weather in Rome",
+    "ref": "what s the weather in ..",
     "betterThan": [
-      "2"
+      "weather2",
+      "weather3",
+      "weather4"
     ]
   },
-  "2": {
-    "user": "a b c",
-    "ref": ".. c",
+  "weather2": {
+    "user": "what s the weather in Rome",
+    "ref": "what s the weather at ..",
+    "betterThan": [
+      "weather3",
+      "weather4"
+    ]
+  },
+  "weather3": {
+    "user": "what s the weather in Rome",
+    "ref": "what s the weather",
+    "betterThan": [
+      "weather4"
+    ]
+  },
+  "weather4": {
+    "user": "what is the weather in Rome",
+    "ref": "what s the weather",
+    "betterThan": []
+  },
+  "search1": {
+    "user": "search online",
+    "ref": "search online",
+    "betterThan": [
+      "search2",
+      "search3"
+    ]
+  },
+  "search2": {
+    "user": "search online",
+    "ref": "search .. online",
+    "betterThan": [
+      "search3"
+    ]
+  },
+  "search3": {
+    "user": "search online",
+    "ref": "search for .. online",
+    "betterThan": []
+  },
+  "search4": {
+    "user": "search for this online",
+    "ref": "search for .. online",
+    "betterThan": [
+      "search5",
+      "search6"
+    ]
+  },
+  "search5": {
+    "user": "search for this online",
+    "ref": "search .. online",
+    "betterThan": [
+      "search6"
+    ]
+  },
+  "search6": {
+    "user": "search for this online",
+    "ref": "search online",
     "betterThan": []
   }
 }
