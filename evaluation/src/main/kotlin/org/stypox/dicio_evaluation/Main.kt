@@ -25,8 +25,7 @@ fun main() {
                 }
                 println("User input: $userInput")
                 println("Reference: $ref")
-                println("Time: $time")
-                println("Result: $result")
+                println("$time, ${result.options} options, score ${"%.2f".format(result.score)}, result ${result.result}")
                 println()
             }
         }

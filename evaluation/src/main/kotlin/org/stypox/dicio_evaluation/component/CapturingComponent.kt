@@ -16,7 +16,7 @@ class CapturingComponent(
             refMatched = if (start == end) 0.0f else weight,
             refWeight = weight,
             end = end,
-            canGrow = true,
+            canGrow = end != ctx.userInput.length,
         ))
     }
 }

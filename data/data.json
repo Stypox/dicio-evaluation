@@ -1,12 +1,13 @@
 [
   {
     "user": [
-      "what's the weather in rome"
+      "what's the weather in rome",
+      "what is the weather in rome"
     ],
     "ref": [
       "what s the weather in ..",
       "what s the weather at ..",
-      "what is the weather"
+      "what s the weather"
     ]
   }
 ]
