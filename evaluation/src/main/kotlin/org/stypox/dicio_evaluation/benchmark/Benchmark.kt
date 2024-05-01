@@ -7,6 +7,7 @@ import org.stypox.dicio_evaluation.context.cumulativeWeight
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TimeSource
+import kotlin.time.TimedValue
 
 fun match(
     userInput: String,
@@ -40,7 +41,7 @@ fun match(
     )
 }
 
-fun <T> benchmark(f: () -> T): Pair<T, Duration> {
+fun <T> benchmark(f: () -> T): TimedValue<T> {
     val timeSource = TimeSource.Monotonic
 
     // warmup phase
@@ -59,5 +60,5 @@ fun <T> benchmark(f: () -> T): Pair<T, Duration> {
         times += 1
     }
 
-    return Pair(result, startMark.elapsedNow() / times)
+    return TimedValue(result, startMark.elapsedNow() / times)
 }

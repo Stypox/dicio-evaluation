@@ -7,6 +7,7 @@ import org.stypox.dicio_evaluation.benchmark.Strategies
 import org.stypox.dicio_evaluation.benchmark.benchmark
 import org.stypox.dicio_evaluation.benchmark.match
 import java.io.FileInputStream
+import kotlin.time.measureTimedValue
 
 /**
  * The bruteforce algorithm produces O((u+1)² * binom(u+r, u+1)) options
@@ -33,6 +34,8 @@ fun main() {
         it.toData()
     }
 
+    val doBenchmark = false;
+
     for (data in dataPoints) {
         for (userInput in data.user) {
             for ((component, ref) in data.ref) {
@@ -47,7 +50,7 @@ fun main() {
                         continue
                     }
 
-                    val (result, time) = benchmark {
+                    val funToBenchmark = {
                         match(
                             userInput = userInput,
                             component = component,
@@ -55,6 +58,12 @@ fun main() {
                             pruningFunction = strategy.pruningFunction,
                         )
                     }
+
+                    val (result, time) = if (doBenchmark)
+                        benchmark(funToBenchmark)
+                    else
+                        measureTimedValue(funToBenchmark)
+
                     println("$strategy: $time, ${result.options} options, score ${
                         "%.2f".format(result.score)}, result ${result.result}")
                 }
