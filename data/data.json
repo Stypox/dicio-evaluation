@@ -29,5 +29,21 @@
       "search .. online",
       "search for .. online"
     ]
+  },
+  {
+    "user": [
+      "set an event",
+      "set event",
+      "set whatever an event",
+      "set whatever event",
+      "set an",
+      "set",
+      "set an whatever",
+      "set whatever",
+      "whatever"
+    ],
+    "ref": [
+      "set:1.0 an:0.5 event:2.0"
+    ]
   }
 ]

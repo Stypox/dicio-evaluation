@@ -20,10 +20,15 @@ fun match(
 
     val options = ArrayList<MatchResult>()
     for (start in 0..userInput.length) {
-        val skippedWordsWeight = cumulativeWeight[start] - cumulativeWeight[0]
         options.addAll(
-            component.matchCached(0, userInput.length, ctx)
-                .map { it.copy(userWeight = it.userWeight + skippedWordsWeight) }
+            component.matchCached(0, userInput.length, ctx).map {
+                it.copy(
+                    userWeight = it.userWeight +
+                            (cumulativeWeight[start] - cumulativeWeight[0]) +
+                            (cumulativeWeight[userInput.length] - cumulativeWeight[it.end]),
+                    end = userInput.length,
+                )
+            }
         )
     }
 
