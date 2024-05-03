@@ -3,6 +3,9 @@ package org.stypox.dicio_evaluation.comparison
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.compose.any
+import io.kotest.matchers.doubles.shouldNotBeNaN
+import io.kotest.matchers.doubles.shouldNotBeNegativeInfinity
+import io.kotest.matchers.doubles.shouldNotBePositiveInfinity
 import io.kotest.matchers.string.shouldHaveLength
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -28,6 +31,15 @@ fun test(comparison: Comparison, strategy: Strategy) {
     )
     println("Match between \"${comparison.worseUser}\" and \"${
         comparison.worseRawRef}\": $matchWorse")
+
+    matchBetter.score
+        .shouldNotBeNaN()
+        .shouldNotBeNegativeInfinity()
+        .shouldNotBePositiveInfinity()
+    matchWorse.score
+        .shouldNotBeNaN()
+        .shouldNotBeNegativeInfinity()
+        .shouldNotBePositiveInfinity()
 
     // compare with some margin to avoid floating point errors
     (matchBetter.score > matchWorse.score + 0.1 ||

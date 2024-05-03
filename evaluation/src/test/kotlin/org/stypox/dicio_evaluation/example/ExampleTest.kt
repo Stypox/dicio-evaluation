@@ -1,6 +1,9 @@
 package org.stypox.dicio_evaluation.example
 
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.doubles.shouldNotBeNaN
+import io.kotest.matchers.doubles.shouldNotBeNegativeInfinity
+import io.kotest.matchers.doubles.shouldNotBePositiveInfinity
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -41,6 +44,11 @@ fun test(examples: List<Example>, doBenchmark: Boolean, limitOptionCount: Long) 
                     println("$strategy: $time, ${
                         result.options} options, $optionCountEstimate options estimated, score ${
                         "%.2f".format(result.score)}, result ${result.result}")
+
+                    result.score
+                        .shouldNotBeNaN()
+                        .shouldNotBeNegativeInfinity()
+                        .shouldNotBePositiveInfinity()
                 }
                 println()
             }
