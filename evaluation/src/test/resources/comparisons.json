@@ -118,5 +118,20 @@
     "user": "whatever",
     "ref": "set:1.0 an:0.5 event:2.0",
     "betterThan": []
+  },
+  "capturing1": {
+    "user": "what is the weather??",
+    "ref": "what is the weather",
+    "betterThan": ["capturing2"]
+  },
+  "capturing2": {
+    "user": "what is the weather??",
+    "ref": "what is ..",
+    "betterThan": ["capturing3"]
+  },
+  "capturing3": {
+    "user": "what is the weather??",
+    "ref": "..",
+    "betterThan": []
   }
 }
