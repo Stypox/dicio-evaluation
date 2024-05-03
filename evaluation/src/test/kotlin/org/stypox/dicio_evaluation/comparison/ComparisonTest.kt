@@ -30,7 +30,9 @@ fun test(comparison: Comparison, strategy: Strategy) {
         comparison.worseRawRef}\": $matchWorse")
 
     // compare with some margin to avoid floating point errors
-    (matchBetter.score > matchWorse.score + 0.1f || matchBetter.score / matchWorse.score > 1.03)
+    (matchBetter.score > matchWorse.score + 0.1 ||
+            (matchBetter.score >= matchWorse.score && matchWorse.score == 0.0) ||
+            matchBetter.score / matchWorse.score > 1.03)
         .shouldBeTrue()
 }
 
