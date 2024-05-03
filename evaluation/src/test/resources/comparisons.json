@@ -2,26 +2,17 @@
   "weather1": {
     "user": "what s the weather in Rome",
     "ref": "what s the weather in ..",
-    "betterThan": [
-      "weather2",
-      "weather3",
-      "weather4"
-    ]
+    "betterThan": ["weather2"]
   },
   "weather2": {
     "user": "what s the weather in Rome",
     "ref": "what s the weather at ..",
-    "betterThan": [
-      "weather3",
-      "weather4"
-    ]
+    "betterThan": ["weather3"]
   },
   "weather3": {
     "user": "what s the weather in Rome",
     "ref": "what s the weather",
-    "betterThan": [
-      "weather4"
-    ]
+    "betterThan": ["weather4"]
   },
   "weather4": {
     "user": "what is the weather in Rome",
@@ -31,17 +22,12 @@
   "search1": {
     "user": "search online",
     "ref": "search online",
-    "betterThan": [
-      "search2",
-      "search3"
-    ]
+    "betterThan": ["search2"]
   },
   "search2": {
     "user": "search online",
     "ref": "search .. online",
-    "betterThan": [
-      "search3"
-    ]
+    "betterThan": ["search3"]
   },
   "search3": {
     "user": "search online",
@@ -51,21 +37,86 @@
   "search4": {
     "user": "search for this online",
     "ref": "search for .. online",
-    "betterThan": [
-      "search5",
-      "search6"
-    ]
+    "betterThan": ["search5"]
   },
   "search5": {
     "user": "search for this online",
     "ref": "search .. online",
-    "betterThan": [
-      "search6"
-    ]
+    "betterThan": ["search6"]
   },
   "search6": {
     "user": "search for this online",
     "ref": "search online",
+    "betterThan": []
+  },
+  "weight1": {
+    "user": "a",
+    "ref": "a:1.0",
+    "betterThan": ["weight2"]
+  },
+  "weight2": {
+    "user": "a",
+    "ref": "a:0.1",
+    "betterThan": []
+  },
+  "moreMatchesMoreErrors1": {
+    "user": "a b c d f",
+    "ref": "a b c d z",
+    "betterThan": ["moreMatchesMoreErrors2"]
+  },
+  "moreMatchesMoreErrors2": {
+    "user": "a b c d e f g h i",
+    "ref": "a b c d e f z z z",
+    "betterThan": []
+  },
+  "event01": {
+    "user": "set an event",
+    "ref": "set:1.0 an:0.5 event:2.0",
+    "betterThan": ["event02"]
+  },
+  "event02": {
+    "user": "set whatever an event",
+    "ref": "set:1.0 an:0.5 event:2.0",
+    "betterThan": ["event03"]
+  },
+  "event03": {
+    "user": "set event",
+    "ref": "set:1.0 an:0.5 event:2.0",
+    "betterThan": ["event04"]
+  },
+  "event04": {
+    "user": "set whatever event",
+    "ref": "set:1.0 an:0.5 event:2.0",
+    "betterThan": ["event05"]
+  },
+  "event05": {
+    "user": "set an",
+    "ref": "set:1.0 an:0.5 event:2.0",
+    "betterThan": ["event06"]
+  },
+  "event06": {
+    "user": "set an whatever",
+    "ref": "set:1.0 an:0.5 event:2.0",
+    "betterThan": ["event07"]
+  },
+  "event07": {
+    "user": "set",
+    "ref": "set:1.0 an:0.5 event:2.0",
+    "betterThan": ["event08"]
+  },
+  "event08": {
+    "user": "set whatever",
+    "ref": "set:1.0 an:0.5 event:2.0",
+    "betterThan": ["event09"]
+  },
+  "event09": {
+    "user": "",
+    "ref": "set:1.0 an:0.5 event:2.0",
+    "betterThan": ["event10"]
+  },
+  "event10": {
+    "user": "whatever",
+    "ref": "set:1.0 an:0.5 event:2.0",
     "betterThan": []
   }
 }
