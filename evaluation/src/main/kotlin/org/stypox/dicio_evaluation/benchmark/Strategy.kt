@@ -10,47 +10,42 @@ enum class Strategy(
     val estimateOptionCount: (userInputLength: Int, refLength: Int) -> Long,
 ) {
     LINEAR(
-        ::scoringLinear,
-        pruningBest(::scoringLinear),
+        scoringLinear(2.0, -1.0, 2.0, -1.0),
+        pruningBest(scoringLinear(2.0, -1.0, 2.0, -1.0)),
         ::pruningBestEstimate,
     ),
     RATIO_PRUNING_NONE(
-        ::scoringWeightedRatio,
+        scoringWeightedRatio(0.9),
         ::pruningNone,
         ::pruningNoneEstimate,
     ),
     RATIO_PRUNING_BEST_HALF(
-        ::scoringWeightedRatio,
-        pruningBestHalf(::scoringWeightedRatio),
+        scoringWeightedRatio(0.9),
+        pruningBestHalf(scoringWeightedRatio(0.9)),
         ::pruningBestHalfEstimate,
     ),
     RATIO_PRUNING_BEST(
-        ::scoringWeightedRatio,
-        pruningBest(::scoringWeightedRatio),
+        scoringWeightedRatio(0.9),
+        pruningBest(scoringWeightedRatio(0.9)),
         ::pruningBestEstimate,
     ),
 }
 
-const val SCORING_WEIGHTED_RATIO_WEIGHT = 0.9
-fun scoringWeightedRatio(stats: MatchResult): Double {
+fun scoringWeightedRatio(denominatorExp: Double) = { stats: MatchResult ->
     val denominator = stats.userWeight + stats.refWeight
     if (denominator == 0.0f) {
-        return 0.0
+        0.0
+    } else {
+        (stats.userMatched + stats.refMatched) /
+                denominator.toDouble().pow(denominatorExp)
     }
-
-    return (stats.userMatched + stats.refMatched) /
-            denominator.toDouble().pow(SCORING_WEIGHTED_RATIO_WEIGHT)
 }
 
-const val SCORING_LINEAR_UM = 2.0
-const val SCORING_LINEAR_UW = -1.0
-const val SCORING_LINEAR_RM = 2.0
-const val SCORING_LINEAR_RW = -1.0
-fun scoringLinear(stats: MatchResult): Double {
-    return SCORING_LINEAR_UM * stats.userMatched +
-            SCORING_LINEAR_UW * stats.userWeight +
-            SCORING_LINEAR_RM * stats.refMatched +
-            SCORING_LINEAR_RW * stats.refWeight
+fun scoringLinear(um: Double, uw: Double, rm: Double, rw: Double) = { stats: MatchResult ->
+    um * stats.userMatched +
+            uw * stats.userWeight +
+            rm * stats.refMatched +
+            rw * stats.refWeight
 }
 
 fun pruningNone(@Suppress("UNUSED_PARAMETER") options: MutableList<MatchResult>) {
