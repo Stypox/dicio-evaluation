@@ -65,13 +65,13 @@
     "betterThan": []
   },
   "moreMatchesMoreErrors1": {
-    "user": "a b c d f",
+    "user": "a b c d y",
     "ref": "a b c d z",
     "betterThan": ["moreMatchesMoreErrors2"]
   },
   "moreMatchesMoreErrors2": {
-    "user": "a b c d e f g h i",
-    "ref": "a b c d e f z z z",
+    "user": "a b c d e y y y y",
+    "ref": "a b c d e z z z z",
     "betterThan": []
   },
   "event01": {
