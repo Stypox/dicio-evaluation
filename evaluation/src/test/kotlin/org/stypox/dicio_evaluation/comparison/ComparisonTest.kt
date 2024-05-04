@@ -20,7 +20,7 @@ fun test(comparison: Comparison, strategy: Strategy) {
         scoringFunction = strategy.scoringFunction,
         pruningFunction = strategy.pruningFunction,
     )
-    println("Match between \"${comparison.betterUser}\" and \"${
+    println("Better match between \"${comparison.betterUser}\" and \"${
         comparison.betterRawRef}\": $matchBetter")
 
     val matchWorse = match(
@@ -29,7 +29,7 @@ fun test(comparison: Comparison, strategy: Strategy) {
         scoringFunction = strategy.scoringFunction,
         pruningFunction = strategy.pruningFunction,
     )
-    println("Match between \"${comparison.worseUser}\" and \"${
+    println("Worse match between \"${comparison.worseUser}\" and \"${
         comparison.worseRawRef}\": $matchWorse")
 
     matchBetter.score

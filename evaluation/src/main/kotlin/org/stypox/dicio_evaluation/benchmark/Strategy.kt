@@ -9,22 +9,32 @@ enum class Strategy(
     val pruningFunction: (MutableList<MatchResult>) -> Unit,
     val estimateOptionCount: (userInputLength: Int, refLength: Int) -> Long,
 ) {
-    LINEAR(
+    LINEAR_A(
         scoringLinear(2.0, -1.0, 2.0, -1.0),
         pruningBest(scoringLinear(2.0, -1.0, 2.0, -1.0)),
         ::pruningBestEstimate,
     ),
-    RATIO_PRUNING_NONE(
-        scoringWeightedRatio(0.9),
+    LINEAR_B(
+        scoringLinear(2.0, -1.1, 2.0, -1.1),
+        pruningBest(scoringLinear(2.0, -1.1, 2.0, -1.1)),
+        ::pruningBestEstimate,
+    ),
+    RATIO_0_5_PRUNING_NONE(
+        scoringWeightedRatio(0.5),
         ::pruningNone,
         ::pruningNoneEstimate,
     ),
-    RATIO_PRUNING_BEST_HALF(
-        scoringWeightedRatio(0.9),
-        pruningBestHalf(scoringWeightedRatio(0.9)),
+    RATIO_0_5_PRUNING_BEST_HALF(
+        scoringWeightedRatio(0.5),
+        pruningBestHalf(scoringWeightedRatio(0.5)),
         ::pruningBestHalfEstimate,
     ),
-    RATIO_PRUNING_BEST(
+    RATIO_0_5_PRUNING_BEST(
+        scoringWeightedRatio(0.5),
+        pruningBest(scoringWeightedRatio(0.5)),
+        ::pruningBestEstimate,
+    ),
+    RATIO_0_9_PRUNING_BEST(
         scoringWeightedRatio(0.9),
         pruningBest(scoringWeightedRatio(0.9)),
         ::pruningBestEstimate,
