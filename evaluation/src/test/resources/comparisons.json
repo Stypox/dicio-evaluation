@@ -46,6 +46,11 @@
   },
   "search6": {
     "user": "search for this online",
+    "ref": "search ..",
+    "betterThan": ["search7"]
+  },
+  "search7": {
+    "user": "search for this online",
     "ref": "search online",
     "betterThan": []
   },
