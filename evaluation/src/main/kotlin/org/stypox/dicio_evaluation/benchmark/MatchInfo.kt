@@ -5,6 +5,6 @@ import kotlin.time.Duration
 
 data class MatchInfo(
     val options: Int,
-    val score: Double,
+    val score: Float,
     val result: MatchResult,
 )

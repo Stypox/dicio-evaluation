@@ -11,7 +11,7 @@ import kotlin.time.TimedValue
 fun match(
     userInput: String,
     component: Component,
-    scoringFunction: (MatchResult) -> Double,
+    scoringFunction: (MatchResult) -> Float,
     pruningFunction: (MutableList<MatchResult>) -> Unit,
 ): MatchInfo {
     component.setupCache(userInput.length)

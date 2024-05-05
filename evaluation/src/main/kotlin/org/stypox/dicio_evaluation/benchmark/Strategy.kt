@@ -5,53 +5,53 @@ import kotlin.math.min
 import kotlin.math.pow
 
 enum class Strategy(
-    val scoringFunction: (stats: MatchResult) -> Double,
+    val scoringFunction: (stats: MatchResult) -> Float,
     val pruningFunction: (MutableList<MatchResult>) -> Unit,
     val estimateOptionCount: (userInputLength: Int, refLength: Int) -> Long,
 ) {
     LINEAR_A(
-        scoringLinear(2.0, -1.0, 2.0, -1.0),
-        pruningBest(scoringLinear(2.0, -1.0, 2.0, -1.0)),
+        scoringLinear(2.0f, -1.0f, 2.0f, -1.0f),
+        pruningBest(scoringLinear(2.0f, -1.0f, 2.0f, -1.0f)),
         ::pruningBestEstimate,
     ),
     LINEAR_B(
-        scoringLinear(2.0, -1.1, 2.0, -1.1),
-        pruningBest(scoringLinear(2.0, -1.1, 2.0, -1.1)),
+        scoringLinear(2.0f, -1.1f, 2.0f, -1.1f),
+        pruningBest(scoringLinear(2.0f, -1.1f, 2.0f, -1.1f)),
         ::pruningBestEstimate,
     ),
     RATIO_0_5_PRUNING_NONE(
-        scoringWeightedRatio(0.5),
+        scoringWeightedRatio(0.5f),
         ::pruningNone,
         ::pruningNoneEstimate,
     ),
     RATIO_0_5_PRUNING_BEST_HALF(
-        scoringWeightedRatio(0.5),
-        pruningBestHalf(scoringWeightedRatio(0.5)),
+        scoringWeightedRatio(0.5f),
+        pruningBestHalf(scoringWeightedRatio(0.5f)),
         ::pruningBestHalfEstimate,
     ),
     RATIO_0_5_PRUNING_BEST(
-        scoringWeightedRatio(0.5),
-        pruningBest(scoringWeightedRatio(0.5)),
+        scoringWeightedRatio(0.5f),
+        pruningBest(scoringWeightedRatio(0.5f)),
         ::pruningBestEstimate,
     ),
     RATIO_0_9_PRUNING_BEST(
-        scoringWeightedRatio(0.9),
-        pruningBest(scoringWeightedRatio(0.9)),
+        scoringWeightedRatio(0.9f),
+        pruningBest(scoringWeightedRatio(0.9f)),
         ::pruningBestEstimate,
     ),
 }
 
-fun scoringWeightedRatio(denominatorExp: Double) = { stats: MatchResult ->
+fun scoringWeightedRatio(denominatorExp: Float) = { stats: MatchResult ->
     val denominator = stats.userWeight + stats.refWeight
     if (denominator == 0.0f) {
-        0.0
+        0.0f
     } else {
         (stats.userMatched + stats.refMatched) /
-                denominator.toDouble().pow(denominatorExp)
+                denominator.toFloat().pow(denominatorExp)
     }
 }
 
-fun scoringLinear(um: Double, uw: Double, rm: Double, rw: Double) = { stats: MatchResult ->
+fun scoringLinear(um: Float, uw: Float, rm: Float, rw: Float) = { stats: MatchResult ->
     um * stats.userMatched +
             uw * stats.userWeight +
             rm * stats.refMatched +
@@ -75,7 +75,7 @@ fun pruningNoneEstimate(userInputLength: Int, refLength: Int): Long {
     return result
 }
 
-fun pruningBest(scoringFunction: (stats: MatchResult) -> Double): (MutableList<MatchResult>) -> Unit = { options: MutableList<MatchResult> ->
+fun pruningBest(scoringFunction: (stats: MatchResult) -> Float): (MutableList<MatchResult>) -> Unit = { options: MutableList<MatchResult> ->
     val best = options.maxBy(scoringFunction)
     options.clear()
     options.add(best)
@@ -85,7 +85,7 @@ fun pruningBestEstimate(userInputLength: Int, refLength: Int): Long {
     return (userInputLength + 1).toLong()
 }
 
-fun pruningBestHalf(scoringFunction: (stats: MatchResult) -> Double): (MutableList<MatchResult>) -> Unit = { options: MutableList<MatchResult> ->
+fun pruningBestHalf(scoringFunction: (stats: MatchResult) -> Float): (MutableList<MatchResult>) -> Unit = { options: MutableList<MatchResult> ->
     options.sortByDescending(scoringFunction)
     for (i in 0..min(options.size - 16, options.size / 2)) {
         options.removeLast()

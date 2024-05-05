@@ -10,7 +10,7 @@ import org.stypox.dicio_evaluation.benchmark.scoringWeightedRatio
 import org.stypox.dicio_evaluation.benchmark.stringToComponent
 import org.stypox.dicio_evaluation.component.MatchResult
 
-fun parseMatch(user: String, rawRef: String, scoringFunction: (stats: MatchResult) -> Double): MatchInfo {
+fun parseMatch(user: String, rawRef: String, scoringFunction: (stats: MatchResult) -> Float): MatchInfo {
     return match(
         userInput = user,
         component = stringToComponent(rawRef),
@@ -20,7 +20,7 @@ fun parseMatch(user: String, rawRef: String, scoringFunction: (stats: MatchResul
 }
 
 fun test(u0: String, r0: String, u1: String, r1: String, u2: String, r2: String,
-         scoringFunction: (stats: MatchResult) -> Double) {
+         scoringFunction: (stats: MatchResult) -> Float) {
     val match1 = parseMatch(u1, r1, scoringFunction)
     val match2 = parseMatch(u2, r2, scoringFunction)
     println("Match 1 (\"$u1\" vs \"$r1\"): $match1")
@@ -45,9 +45,9 @@ fun test(u0: String, r0: String, u1: String, r1: String, u2: String, r2: String,
 class MonotonicityTest : DescribeSpec({
     describe("check which scoring functions would fail under greedy pruning") {
         listOf(
-            Pair(scoringLinear(2.0, -1.0, 2.0, -1.0), "scoringLinear 2, -1, 2, -1"),
-            Pair(scoringWeightedRatio(0.9), "scoringWeightedRatio 0.9"),
-            Pair(scoringWeightedRatio(0.5), "scoringWeightedRatio 0.5"),
+            Pair(scoringLinear(2.0f, -1.0f, 2.0f, -1.0f), "scoringLinear 2, -1, 2, -1"),
+            Pair(scoringWeightedRatio(0.9f), "scoringWeightedRatio 0.9"),
+            Pair(scoringWeightedRatio(0.5f), "scoringWeightedRatio 0.5"),
         ).forEach { (scoringFunction, describeName) ->
             describe(describeName) {
                 it("should break scoringWeightedRatio(0.9)") {

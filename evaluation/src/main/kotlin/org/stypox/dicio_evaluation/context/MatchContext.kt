@@ -4,7 +4,7 @@ import org.stypox.dicio_evaluation.component.MatchResult
 
 class MatchContext(
     val userInput: String,
-    val scoringFunction: (stats: MatchResult) -> Double,
+    val scoringFunction: (stats: MatchResult) -> Float,
     val pruningFunction: (options: MutableList<MatchResult>) -> Unit,
 ) {
     private val tokenizations: MutableMap<String, Any> = HashMap()

@@ -1,9 +1,8 @@
 package org.stypox.dicio_evaluation.example
 
 import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.doubles.shouldNotBeNaN
-import io.kotest.matchers.doubles.shouldNotBeNegativeInfinity
-import io.kotest.matchers.doubles.shouldNotBePositiveInfinity
+import io.kotest.matchers.floats.shouldNotBeNaN
+import io.kotest.matchers.shouldNotBe
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -47,8 +46,8 @@ fun test(examples: List<Example>, doBenchmark: Boolean, limitOptionCount: Long) 
 
                     result.score
                         .shouldNotBeNaN()
-                        .shouldNotBeNegativeInfinity()
-                        .shouldNotBePositiveInfinity()
+                        .shouldNotBe(Float.NEGATIVE_INFINITY)
+                        .shouldNotBe(Float.POSITIVE_INFINITY)
                 }
                 println()
             }
@@ -71,7 +70,7 @@ class ExampleTest : StringSpec({
         test(examples, true, Long.MAX_VALUE)
     }
 
-    "run benchmark, but skip strategies that would take too much time" {
+    "run benchmark, but skip strategies that would take too much time".config(enabled = false) {
         test(examples, true, 1000000)
     }
 

@@ -8,7 +8,7 @@ import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe
 import kotlin.math.abs
 
-fun ctx(userInput: String) = MatchContext(userInput, { 0.0 }, {})
+fun ctx(userInput: String) = MatchContext(userInput, { 0.0f }, {})
 
 fun beEqualToPlusOrMinus(vararg expected: Float) = object : Matcher<FloatArray> {
     override fun test(value: FloatArray): MatcherResult {

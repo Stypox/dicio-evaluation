@@ -2,11 +2,8 @@ package org.stypox.dicio_evaluation.comparison
 
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.shouldBeTrue
-import io.kotest.matchers.compose.any
-import io.kotest.matchers.doubles.shouldNotBeNaN
-import io.kotest.matchers.doubles.shouldNotBeNegativeInfinity
-import io.kotest.matchers.doubles.shouldNotBePositiveInfinity
-import io.kotest.matchers.string.shouldHaveLength
+import io.kotest.matchers.floats.shouldNotBeNaN
+import io.kotest.matchers.shouldNotBe
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -34,16 +31,16 @@ fun test(comparison: Comparison, strategy: Strategy) {
 
     matchBetter.score
         .shouldNotBeNaN()
-        .shouldNotBeNegativeInfinity()
-        .shouldNotBePositiveInfinity()
+        .shouldNotBe(Float.NEGATIVE_INFINITY)
+        .shouldNotBe(Float.POSITIVE_INFINITY)
     matchWorse.score
         .shouldNotBeNaN()
-        .shouldNotBeNegativeInfinity()
-        .shouldNotBePositiveInfinity()
+        .shouldNotBe(Float.NEGATIVE_INFINITY)
+        .shouldNotBe(Float.POSITIVE_INFINITY)
 
     // compare with some margin to avoid floating point errors
-    (matchBetter.score > matchWorse.score + 0.1 ||
-            (matchBetter.score >= matchWorse.score && matchWorse.score == 0.0) ||
+    (matchBetter.score > matchWorse.score + 0.1f ||
+            (matchBetter.score >= matchWorse.score && matchWorse.score == 0.0f) ||
             matchBetter.score / matchWorse.score > 1.03)
         .shouldBeTrue()
 }
