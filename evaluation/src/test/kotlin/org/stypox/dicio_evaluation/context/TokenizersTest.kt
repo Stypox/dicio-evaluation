@@ -112,7 +112,7 @@ class TokenizersTest : DescribeSpec({
                     0.25f, 0.35f))
         }
         it("words") {
-            cumulativeWeight(ctx("hello ciao"))
+            cumulativeWeight(ctx("hello guys"))
                 .should(beEqualToPlusOrMinus(0.0f, 0.2f, 0.4f, 0.6f, 0.8f, 1.0f, 1.0f, 1.25f, 1.5f,
                     1.75f, 2.0f))
         }
@@ -123,10 +123,25 @@ class TokenizersTest : DescribeSpec({
                     1.0f))
         }
         it("mixed words") {
-            cumulativeWeight(ctx("\nLala\thello, ci2ao!!"))
+            cumulativeWeight(ctx("\nLala\thello, gu2ys!!"))
                 .should(beEqualToPlusOrMinus(0.0f, 0.0f, 0.25f, 0.5f, 0.75f, 1.0f, 1.0f, 1.2f, 1.4f,
                     1.6f, 1.8f, 2.0f, 2.05f, 2.05f, 2.55f, 3.05f, 3.15f, 3.65f, 4.15f, 4.20f,
                     4.25f))
+        }
+    }
+
+    describe("cumulativeWhitespace") {
+        it("only whitespace") {
+            cumulativeWhitespace(ctx(" \n\t "))
+                .shouldBe(arrayOf(0, 1, 2, 3, 4))
+        }
+        it("no whitespace") {
+            cumulativeWhitespace(ctx("Hello!"))
+                .shouldBe(arrayOf(0, 0, 0, 0, 0, 0, 0))
+        }
+        it("mixed") {
+            cumulativeWhitespace(ctx("\nHello, gu0ys\t!"))
+                .shouldBe(arrayOf(0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3))
         }
     }
 })
