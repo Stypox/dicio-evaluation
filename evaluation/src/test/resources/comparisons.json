@@ -19,6 +19,21 @@
     "ref": "what s the weather",
     "betterThan": []
   },
+  "weather5": {
+    "user": "how is the weather right now",
+    "ref": "how is the weather",
+    "betterThan": ["weather6", "weather7"]
+  },
+  "weather6": {
+    "user": "how is the weather right now",
+    "ref": "how is the weather in ..",
+    "betterThan": ["weather7"]
+  },
+  "weather7": {
+    "user": "how is the weather right now",
+    "ref": "how is the weather in:6.0 ..",
+    "betterThan": []
+  },
   "search1": {
     "user": "search online",
     "ref": "search online",
@@ -54,6 +69,16 @@
     "ref": "search online",
     "betterThan": []
   },
+  "search8": {
+    "user": "look it up",
+    "ref": "look .. up",
+    "betterThan": ["search9"]
+  },
+  "search9": {
+    "user": "look it up",
+    "ref": "look up ..",
+    "betterThan": []
+  },
   "weight1": {
     "user": "a",
     "ref": "a:1.0",
@@ -62,6 +87,16 @@
   "weight2": {
     "user": "a",
     "ref": "a:0.1",
+    "betterThan": []
+  },
+  "weight3": {
+    "user": "what are you doing",
+    "ref": "what:0.5 are:0.5 you:0.5 doing:0.5",
+    "betterThan": ["weight4"]
+  },
+  "weight4": {
+    "user": "what are you doing",
+    "ref": "what are you",
     "betterThan": []
   },
   "moreMatchesMoreErrors1": {
@@ -137,6 +172,101 @@
   "capturing3": {
     "user": "what is the weather??",
     "ref": "..",
+    "betterThan": []
+  },
+  "calculator1": {
+    "user": "what is 5 + 5",
+    "ref": "what is ..",
+    "betterThan": ["calculator2"]
+  },
+  "calculator2": {
+    "user": "what is 5 + 5",
+    "ref": "what is ..:0.0",
+    "betterThan": ["calculator3"]
+  },
+  "calculator3": {
+    "user": "what is 5 + 5",
+    "ref": "what is the weather",
+    "betterThan": []
+  },
+  "lyrics1": {
+    "user": "find lyrics of the song that goes we will rock you",
+    "ref": "find the song that goes:6.0 ..",
+    "betterThan": ["lyrics2"]
+  },
+  "lyrics2": {
+    "user": "find lyrics of the song that goes we will rock you",
+    "ref": "find the lyrics of ..",
+    "betterThan": ["lyrics3"]
+  },
+  "lyrics3": {
+    "user": "find lyrics of the song that goes we will rock you",
+    "ref": "lyrics ..",
+    "betterThan": []
+  },
+  "lyrics4": {
+    "user": "search for the world champion",
+    "ref": "search for ..",
+    "betterThan": ["lyrics5"]
+  },
+  "lyrics5": {
+    "user": "search for the world champion",
+    "ref": "search for the song ..",
+    "betterThan": []
+  },
+  "open1": {
+    "user": "open the application newpipe",
+    "ref": "open application ..",
+    "betterThan": ["open2", "open3", "open4"]
+  },
+  "open2": {
+    "user": "open the application newpipe",
+    "ref": "open ..",
+    "betterThan": ["open3", "open4"]
+  },
+  "open3": {
+    "user": "open application newpipe",
+    "ref": "open .. application",
+    "betterThan": []
+  },
+  "open4": {
+    "user": "open newpipe application",
+    "ref": "open application ..",
+    "betterThan": []
+  },
+  "telephone1": {
+    "user": "call John up",
+    "ref": "call .. up",
+    "betterThan": ["telephone2"]
+  },
+  "telephone2": {
+    "user": "call John up",
+    "ref": "call up ..",
+    "betterThan": []
+  },
+  "timer1": {
+    "user": "what time is it at the moment",
+    "ref": "what time is it",
+    "betterThan": ["timer2"]
+  },
+  "timer2": {
+    "user": "what is the time",
+    "ref": "what time is it",
+    "betterThan": []
+  },
+  "timer3": {
+    "user": "set a timer of 10 minutes named test",
+    "ref": "set a timer of .. named ..",
+    "betterThan": ["timer4", "timer5"]
+  },
+  "timer4": {
+    "user": "set a timer of 10 minutes named test",
+    "ref": "set a timer of ..",
+    "betterThan": []
+  },
+  "timer5": {
+    "user": "set a timer of 10 minutes",
+    "ref": "set a timer of .. named ..",
     "betterThan": []
   }
 }
