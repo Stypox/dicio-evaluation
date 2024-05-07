@@ -5,71 +5,87 @@ import java.util.function.Function
 import kotlin.math.min
 import kotlin.math.pow
 
+@Suppress("EnumEntryName")
 enum class Strategy(
     val scoringFunction: (stats: MatchResult) -> Float,
     val pruningFunction: (MutableList<MatchResult>) -> Unit,
     val estimateOptionCount: (userInputLength: Int, refLength: Int) -> Long,
 ) {
-    LINEAR_A(
+    `Linear, balanced, 2 vs -1`(
         scoringLinear(2.0f, -1.0f, 2.0f, -1.0f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    LINEAR_B(
+    `Linear, balanced, 2 vs -1_1`(
         scoringLinear(2.0f, -1.1f, 2.0f, -1.1f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    LINEAR_C(
+    `Linear, balanced, 2 vs -1_3`(
         scoringLinear(2.0f, -1.3f, 2.0f, -1.3f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    LINEAR_D(
+    `Linear, balanced, 2 vs -0_8`(
         scoringLinear(2.0f, -0.8f, 2.0f, -0.8f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    LINEAR_MORE_REF(
+    `Linear, more ref`(
         scoringLinear(2.0f, -1.1f, 3.0f, -1.65f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    LINEAR_MORE_USER(
+    `Linear, more user`(
         scoringLinear(3.0f, -1.65f, 2.0f, -1.1f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    LINEAR_ONLY_REF(
+    `Linear, only ref`(
         scoringLinear(0.0f, 0.0f, 2.0f, -1.0f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    LINEAR_ONLY_USER(
+    `Linear, only user`(
         scoringLinear(2.0f, -1.0f, 0.0f, 0.0f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    RATIO_0_5_PRUNING_NONE(
-        scoringWeightedRatio(0.5f),
+    `Ratio, weightExp = 0_5, no pruning`(
+        scoringRatio(0.5f),
         ::pruningNone,
         ::pruningNoneEstimate,
     ),
-    RATIO_0_5_PRUNING_BEST_HALF(
-        scoringWeightedRatio(0.5f),
+    `Ratio, weightExp = 0_5, pruning best half`(
+        scoringRatio(0.5f),
         ::pruningBestHalf,
         ::pruningBestHalfEstimate,
     ),
-    RATIO_0_5_PRUNING_BEST(
-        scoringWeightedRatio(0.5f),
+    `Ratio, weightExp = 0_5, pruning best`(
+        scoringRatio(0.5f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    RATIO_0_9_PRUNING_BEST(
-        scoringWeightedRatio(0.9f),
+    `Ratio, weightExp = 0_9, pruning best`(
+        scoringRatio(0.9f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
+    `Sum of ratios`(
+        scoringSumOfRatios(1.0f, 0.5f),
+        ::pruningBest,
+        ::pruningBestEstimate
+    ),
+    `Product of ratios`(
+        scoringProductOfRatios(1.0f, 0.5f),
+        ::pruningBest,
+        ::pruningBestEstimate
+    ),
+    `Intersection over union`(
+        scoringIntersectionOverUnion(1.0f, 0.5f),
+        ::pruningBest,
+        ::pruningBestEstimate
+    )
 
     ;
 
@@ -85,21 +101,52 @@ enum class Strategy(
     ) : this(scoringFunction, pruningFunction.apply(scoringFunction), estimateOptionCount)
 }
 
-fun scoringWeightedRatio(denominatorExp: Float) = { stats: MatchResult ->
-    val denominator = stats.userWeight + stats.refWeight
-    if (denominator == 0.0f) {
-        0.0f
-    } else {
-        (stats.userMatched + stats.refMatched) / denominator.pow(denominatorExp)
-    }
-}
-
 fun scoringLinear(um: Float, uw: Float, rm: Float, rw: Float) = { stats: MatchResult ->
     um * stats.userMatched +
             uw * stats.userWeight +
             rm * stats.refMatched +
             rw * stats.refWeight
 }
+
+fun scoringRatio(weightExp: Float) = { stats: MatchResult ->
+    val denominator = stats.userWeight + stats.refWeight
+    if (denominator <= 0.0f) {
+        0.0f
+    } else {
+        (stats.userMatched + stats.refMatched) / denominator.pow(weightExp)
+    }
+}
+
+fun scoringSumOfRatios(userMultiplier: Float, weightExp: Float) = { stats: MatchResult ->
+    if (stats.userWeight <= 0.0f || stats.refWeight <= 0.0f) {
+        0.0f
+    } else {
+        userMultiplier * stats.userMatched / stats.userWeight.pow(weightExp) +
+                stats.refMatched / stats.refWeight.pow(weightExp)
+    }
+}
+
+fun scoringProductOfRatios(userExp: Float, weightExp: Float) = { stats: MatchResult ->
+    if (stats.userWeight <= 0.0f || stats.refWeight <= 0.0f) {
+        0.0f
+    } else {
+        stats.userMatched.pow(userExp) *
+                stats.refMatched /
+                stats.userWeight.pow(userExp * weightExp) /
+                stats.refWeight.pow(weightExp)
+    }
+}
+
+fun scoringIntersectionOverUnion(userMultiplier: Float, weightExp: Float) = { stats: MatchResult ->
+    if (stats.userMatched <= 0.0f || stats.refMatched <= 0.0f) {
+        0.0f
+    } else {
+        1.0f / (1 +
+                stats.userWeight.pow(weightExp) / stats.userMatched / userMultiplier +
+                stats.refWeight.pow(weightExp) / stats.refMatched)
+    }
+}
+
 
 fun pruningNone(@Suppress("UNUSED_PARAMETER") options: MutableList<MatchResult>) {
 }

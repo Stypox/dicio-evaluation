@@ -6,7 +6,7 @@ import org.stypox.dicio_evaluation.benchmark.MatchInfo
 import org.stypox.dicio_evaluation.benchmark.match
 import org.stypox.dicio_evaluation.benchmark.pruningBest
 import org.stypox.dicio_evaluation.benchmark.scoringLinear
-import org.stypox.dicio_evaluation.benchmark.scoringWeightedRatio
+import org.stypox.dicio_evaluation.benchmark.scoringRatio
 import org.stypox.dicio_evaluation.benchmark.stringToComponent
 import org.stypox.dicio_evaluation.component.MatchResult
 
@@ -46,8 +46,8 @@ class MonotonicityTest : DescribeSpec({
     describe("check which scoring functions would fail under greedy pruning") {
         listOf(
             Pair(scoringLinear(2.0f, -1.0f, 2.0f, -1.0f), "scoringLinear 2, -1, 2, -1"),
-            Pair(scoringWeightedRatio(0.9f), "scoringWeightedRatio 0.9"),
-            Pair(scoringWeightedRatio(0.5f), "scoringWeightedRatio 0.5"),
+            Pair(scoringRatio(0.9f), "scoringWeightedRatio 0.9"),
+            Pair(scoringRatio(0.5f), "scoringWeightedRatio 0.5"),
         ).forEach { (scoringFunction, describeName) ->
             describe(describeName) {
                 it("should break scoringWeightedRatio(0.9)") {
