@@ -21,7 +21,7 @@ fun match(
     val options = ArrayList<MatchResult>()
     for (start in 0..userInput.length) {
         options.addAll(
-            component.matchCached(0, userInput.length, ctx).map {
+            component.matchCached(start, userInput.length, ctx).map {
                 it.copy(
                     userWeight = it.userWeight +
                             (cumulativeWeight[start] - cumulativeWeight[0]) +
