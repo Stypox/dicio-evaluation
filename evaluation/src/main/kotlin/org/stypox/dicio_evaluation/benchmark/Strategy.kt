@@ -61,28 +61,48 @@ enum class Strategy(
         ::pruningBestHalf,
         ::pruningBestHalfEstimate,
     ),
-    `Ratio, weightExp = 0_5, pruning best`(
+    `Ratio, weightExp = 0_5`(
         scoringRatio(0.5f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    `Ratio, weightExp = 0_9, pruning best`(
+    `Ratio, weightExp = 0_9`(
         scoringRatio(0.9f),
         ::pruningBest,
         ::pruningBestEstimate,
     ),
-    `Sum of ratios`(
+    `Ratio, weightExp = 1_0`(
+        scoringRatio(1.0f),
+        ::pruningBest,
+        ::pruningBestEstimate,
+    ),
+    `Sum of ratios, weightExp = 0_5`(
         scoringSumOfRatios(1.0f, 0.5f),
         ::pruningBest,
         ::pruningBestEstimate
     ),
-    `Product of ratios`(
+    `Sum of ratios, weightExp = 1_0`(
+        scoringSumOfRatios(1.0f, 1.0f),
+        ::pruningBest,
+        ::pruningBestEstimate
+    ),
+    `Product of ratios, weightExp = 0_5`(
         scoringProductOfRatios(1.0f, 0.5f),
         ::pruningBest,
         ::pruningBestEstimate
     ),
-    `Intersection over union`(
+    `Product of ratios, weightExp = 1_0`(
+        scoringProductOfRatios(1.0f, 1.0f),
+        ::pruningBest,
+        ::pruningBestEstimate
+    ),
+    `Intersection over union, weightExp = 0_5`(
         scoringIntersectionOverUnion(1.0f, 0.5f),
+        ::pruningBest,
+        ::pruningBestEstimate
+    ),
+    `Intersection over union, weightExp = 1_0`(
+        scoringIntersectionOverUnion(1.0f, 1.0f),
         ::pruningBest,
         ::pruningBestEstimate
     )
